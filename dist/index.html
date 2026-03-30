@@ -1339,27 +1339,18 @@ function switchTab(type) {
   }
 }
 
-// ── CONFIG ──
-var BEEHIIV_API_KEY = 'uqbWx5hrinnYnVFBFojIKdThsZfQUMJm5RpEVvAT99xBP5a85jr8JhQl4u0J7qAr';
-var BEEHIIV_PUB_ID  = '73c5ca13-7502-4e1e-8f79-7f9fe9fdaf4f';
-
 // ── FORMS ──
 function submitToBeehiiv(email, segment, btn, onSuccess, onError) {
   var originalText = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Submitting\u2026';
 
-  var body = { email: email, reactivate_existing: true };
-  if (segment) {
-    body.custom_fields = [{ name: 'segment', value: segment }];
-  }
+  var body = { email: email };
+  if (segment) body.segment = segment;
 
-  fetch('https://api.beehiiv.com/v2/publications/' + BEEHIIV_PUB_ID + '/subscriptions', {
+  fetch('/api/subscribe', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + BEEHIIV_API_KEY
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   })
   .then(function(res) {
