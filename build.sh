@@ -19,6 +19,6 @@ fi
 mkdir -p dist
 sed -e "s|__BEEHIIV_API_KEY__|$BEEHIIV_API_KEY|g" \
     -e "s|__BEEHIIV_PUB_ID__|$BEEHIIV_PUB_ID|g" \
-    greco.html > dist/greco.html
+    greco.html > dist/index.html
 
-echo "Built -> dist/greco.html"
+echo "Built -> dist/index.html"
