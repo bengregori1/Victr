@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { max-width: 100%; overflow-x: hidden; }
 
 :root {
   --cream: #F7F3EE;
@@ -212,11 +213,20 @@ nav {
   justify-content: center;
   align-items: flex-start;
   animation: fadeUp 1s ease 0.25s both;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .card-carousel {
   width: 100%;
   max-width: 390px;
+  min-width: 0;
+}
+
+.carousel-window {
+  overflow: hidden;
+  border-radius: 12px;
+  width: 100%;
 }
 
 .carousel-dots {
@@ -242,10 +252,6 @@ nav {
   transform: scale(1.4);
 }
 
-.carousel-window {
-  overflow: hidden;
-  border-radius: 12px;
-}
 
 .carousel-track {
   display: flex;
@@ -881,11 +887,11 @@ footer {
     gap: 48px;
     min-height: auto;
   }
-  .hero-visual { order: -1; }
+  .hero-visual { order: -1; width: 100%; }
   .hero-headline { font-size: clamp(38px, 5vw, 60px); }
   .hero-sub { max-width: 100%; }
-  .waitlist-form { max-width: 100%; }
-  .card-carousel { max-width: 100%; }
+  .waitlist-form { max-width: 100%; width: 100%; }
+  .card-carousel { width: 100%; max-width: 100%; }
   .how-section, .creator-section, .cta-section { padding: 80px 32px; }
   .section-divider { padding: 0 32px; }
   .cta-tabs { max-width: 100%; }
