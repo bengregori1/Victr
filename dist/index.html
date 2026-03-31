@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=devictre-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Victr — Publish Your Routine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -906,6 +906,24 @@ footer {
   footer { padding: 24px 20px; flex-direction: column; gap: 8px; text-align: center; }
   .cta-tabs { max-width: 100%; }
   .tab-form-wrap { max-width: 100%; }
+
+  /* Carousel cards — tighter padding on small screens */
+  .routine-card { padding: 20px 16px 28px; }
+  .routine-card::before { left: 16px; right: 16px; }
+
+  /* Routine items — let content wrap gracefully */
+  .routine-item { gap: 8px; padding: 8px 10px; flex-wrap: wrap; }
+  .item-time { min-width: 48px; font-size: 8px; }
+  .item-body { min-width: 0; flex: 1 1 60%; }
+  .item-title { font-size: 11px; }
+  .item-badge { display: none; }
+  .item-lock { margin-left: 0; }
+
+  /* Forms stack on very small screens */
+  .waitlist-form { flex-direction: column; }
+  .waitlist-form button { width: 100%; text-align: center; }
+  .cta-form { flex-direction: column; }
+  .cta-form button { width: 100%; text-align: center; }
 }
   </style>
 </head>
@@ -1327,6 +1345,17 @@ function resetAuto() {
 
 updateCarousel();
 resetAuto();
+
+// ── TOUCH SWIPE ──
+(function() {
+  var el = document.getElementById('carouselTrack');
+  var startX = 0;
+  el.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+  el.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) stepCarousel(dx < 0 ? 1 : -1);
+  }, { passive: true });
+}());
 
 // ── TABS ──
 function switchTab(type) {
