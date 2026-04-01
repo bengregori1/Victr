@@ -212,9 +212,9 @@ nav {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  animation: fadeUp 1s ease 0.25s both;
   min-width: 0;
   overflow: hidden;
+  animation: fadeUp 1s ease 0.25s both;
 }
 
 .card-carousel {
@@ -223,16 +223,12 @@ nav {
   min-width: 0;
 }
 
-.carousel-window {
-  overflow: hidden;
-  border-radius: 12px;
-  width: 100%;
-}
-
 .carousel-dots {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 8px;
+  margin-top: 4px;
   margin-bottom: 14px;
 }
 
@@ -244,14 +240,20 @@ nav {
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: background 0.25s, transform 0.25s;
+  transition: background 0.25s, width 0.25s, height 0.25s;
 }
 
 .dot.active {
   background: var(--gold);
-  transform: scale(1.4);
+  width: 9px;
+  height: 9px;
 }
 
+.carousel-window {
+  overflow: hidden;
+  border-radius: 12px;
+  width: 100%;
+}
 
 .carousel-track {
   display: flex;
@@ -912,20 +914,13 @@ footer {
   footer { padding: 24px 20px; flex-direction: column; gap: 8px; text-align: center; }
   .cta-tabs { max-width: 100%; }
   .tab-form-wrap { max-width: 100%; }
-
-  /* Carousel cards — tighter padding on small screens */
   .routine-card { padding: 20px 16px 28px; }
   .routine-card::before { left: 16px; right: 16px; }
-
-  /* Routine items — let content wrap gracefully */
   .routine-item { gap: 8px; padding: 8px 10px; flex-wrap: wrap; }
   .item-time { min-width: 48px; font-size: 8px; }
   .item-body { min-width: 0; flex: 1 1 60%; }
   .item-title { font-size: 11px; }
-  .item-badge { display: none; }
   .item-lock { margin-left: 0; }
-
-  /* Forms stack on very small screens */
   .waitlist-form { flex-direction: column; }
   .waitlist-form button { width: 100%; text-align: center; }
   .cta-form { flex-direction: column; }
@@ -1361,7 +1356,7 @@ resetAuto();
     var dx = e.changedTouches[0].clientX - startX;
     if (Math.abs(dx) > 40) stepCarousel(dx < 0 ? 1 : -1);
   }, { passive: true });
-}());
+})();
 
 // ── TABS ──
 function switchTab(type) {
@@ -1374,18 +1369,27 @@ function switchTab(type) {
   }
 }
 
+// ── CONFIG ──
+var BEEHIIV_API_KEY = '__BEEHIIV_API_KEY__';
+var BEEHIIV_PUB_ID  = '__BEEHIIV_PUB_ID__';
+
 // ── FORMS ──
 function submitToBeehiiv(email, segment, btn, onSuccess, onError) {
   var originalText = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Submitting\u2026';
 
-  var body = { email: email };
-  if (segment) body.segment = segment;
+  var body = { email: email, reactivate_existing: true };
+  if (segment) {
+    body.tags = [segment];
+  }
 
-  fetch('/api/subscribe', {
+  fetch('https://api.beehiiv.com/v2/publications/' + BEEHIIV_PUB_ID + '/subscriptions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + BEEHIIV_API_KEY
+    },
     body: JSON.stringify(body)
   })
   .then(function(res) {
