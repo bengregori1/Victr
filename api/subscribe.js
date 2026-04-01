@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   const body = { email, reactivate_existing: true };
   if (segment) {
-    body.custom_fields = [{ name: 'segment', value: segment }];
+    body.tags = [segment];
   }
 
   const url = `https://api.beehiiv.com/v2/publications/${process.env.BEEHIIV_PUB_ID}/subscriptions`;
